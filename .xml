@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<map proto="1.0.0">
+    <name>Dry Dorsal</name>
+    <version>1.0</version>
+    <objective>Cap the other teams wools which can be obtained in the wools room</objective>
+	<rules>
+        <rule>Blocks are on kill reward</rule>
+	</rules>
+    <authors>
+        <author>AlexRB43</author>
+    </authors>
+    <teams>
+        <team color="dark red" max="15">Red Team</team>
+        <team color="blue" max="15">Blue Team</team>
+    </teams>
+    <spawns>
+        <spawn team="red" kit="red" yaw="90" pitch="90">
+            <point>732,16.5,-84</point>
+            <point>732,16.5,-84</point>
+        </spawn>
+        <spawn team ="blue" kit="blue" yaw="-90" pitch="90">
+            <point>612,16.5,-84</point>
+            <point>612,16.5,-84</point>
+        </spawn>
+        <default yaw="180">
+            <point>672,38,-48</point>
+        </default>
+    </spawns>
+    <kits>
+        <kit name="spawn">
+            <item slot="0" damage="-3000" name="`bStone Sword`r">stone_sword</item>
+            <item slot="1" damage="-3000" name="`bBow`r">bow</item>
+			<item slot="2" damage="-3000" name="`bStone Pickaxe">stone_pickaxe</item>
+			<item slot="3" damage="-3000" name="`bStone Shovel">stone_shovel</item>
+			<item slot="4" amount="64">cooked_salmon</item>
+			<item slot="5" amount="1">golden_apple</item>
+			<item slot="6" amount="64">arrow</item>
+			<item slot="7" amount="64">hardened_clay</item>
+			<item slot="8" amount="64">log2</item>
+			<item slot="33" amount="64">arrow</item>
+        </kit>
+        <kit name="red" parents="spawn">
+            <boots damage="-3000" color="FF5959">leather boots</boots>
+			<chestplate damage="-3000" color="FF5959">leather chestplate</chestplate>
+			<leggings damage="-3000" color="FF5959">leather leggings</leggings>
+			<helmet damage="-3000" color="FF5959">leather helmet</helmet>
+			
+        </kit>
+        <kit name="blue" parents="spawn">
+            <boots damage="-3000" color="3399FF">leather boots</boots>
+			<chestplate damage="-3000" color="3399FF">leather chestplate</chestplate>
+			<leggings damage="-3000" color="3399FF">leather leggings</leggings>
+			<helmet damage="-3000" color="3399FF">leather helmet</helmet>
+        </kit>
+    </kits>
+<wools>
+    <wools team="red">
+        <wool color="light blue">
+            <block>716,17,-81</block>
+        </wool>
+        <wool color="cyan">
+            <block>716,17,-87</block>
+        </wool>
+    </wools>
+    <wools team="blue">
+        <wool color="orange">
+            <block>628,17,-87</block>
+        </wool>
+        <wool color="yellow">
+            <block>628,17,-81</block>
+        </wool>
+    </wools>
+</wools>
+<filters>
+    <filter name="only-blue" parents="deny-all">
+        <allow>
+            <team>blue</team>
+        </allow>
+    </filter>
+    <filter name="only-red" parents="deny-all">
+        <allow>
+            <team>red</team>
+        </allow>
+    </filter>
+    <filter name="anti-grief-blue" parents="only-blue">
+        <deny>
+            <block>chest</block>
+        </deny>
+    </filter>
+    <filter name="anti-grief-red" parents="only-red">
+        <deny>
+            <block>chest</block>
+        </deny>
+    </filter>
+    <filter name="only-red-usage">
+        <not>
+            <all>
+                <any>
+                    <block>chest</block>
+                    <block>workbench</block>
+                </any>
+                <team>blue</team>
+            </all>
+        </not>
+    </filter>
+    <filter name="only-blue-usage">
+        <not>
+            <all>
+                <any>
+                    <block>chest</block>
+                    <block>workbench</block>
+                </any>
+                <team>red</team>
+            </all>
+        </not>
+    </filter>
+</filters>
+<regions>
+    <!--   Blue has to capture these   -->
+    <union name="blue-wool-rooms">
+        <cuboid name="cyan-room" min="588,12,-124" max="577,35,-116"/>
+        <cuboid name="light blue-room" min="583,10,-55" max="570,36,-46"/>
+    </union>
+    <!--   Red has to capture these   -->
+    <union name="red-wool-rooms">
+        <cuboid name="yellow-room" min="758,12,46" max="769,35,-44"/>
+        <cuboid name="orange-room" min="763,10,-115" max="776,36,-124"/>
+    </union>
+    <apply enter="only-blue" block="only-blue" use="only-blue-usage" message="You may not access/modify your own wool room!">
+        <region name="blue-wool-rooms"/>
+    </apply>
+    <apply enter="only-red" block="only-red" use="only-red-usage" message="You may not access/modify your own wool room!">
+        <region name="red-wool-rooms"/>
+    </apply>
+    <apply block-break="anti-grief-blue">
+        <region name="blue-wool-rooms"/>
+    </apply>
+    <apply block-break="anti-grief-red">
+        <region name="red-wool-rooms"/>
+    </apply>
+    <apply block="deny-all" message="You may not edit outside the map!">
+        <negative>
+            <rectangle min="775,-124" max="569,-46"/>
+        </negative>
+    </apply>
+    <apply block="deny-all" enter="only-blue" use="only-blue">
+        <cuboid name="blue-spawn" min="621,13,-80" max="607,22,-90"/>
+    </apply>
+    <apply block="deny-all" enter="only-red" use="only-red">
+        <cuboid name="red-spawn" min="723,12,-98" max="737,22,-80"/>
+    </apply>
+    <apply block="deny-all">
+        <cuboid name="above-36" min="-oo,36,-oo" max="oo,oo,oo"/>
+    </apply>
+</regions>
+<toolrepair>
+    <tool>stone sword</tool>
+    <tool>bow</tool>
+    <tool>stone shovel</tool>
+    <tool>stone pickaxe</tool>
+</toolrepair>
+<itemremove>
+    <item>obsidian</item>
+    <item>leather chestplate</item>
+    <item>leather boots</item>
+	<item>leather helmet</item>
+	<item>leather leggins</item>
+    <item>cooked salmon</item>
+	<item>log2</item>
+	<item>hardened clay</item>
+</itemremove>
+<timelock>on</timelock>
+
+</map>
